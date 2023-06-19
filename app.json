@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "ProjetoMobileFinal",
-    "slug": "ProjetoMobileFinal",
+    "name": "Projeto2",
+    "slug": "Projeto2",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -22,7 +22,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.hannigust.ProjetoMobileFinal"
+      "package": "com.hannigust.Projeto2"
     },
     "web": {
       "favicon": "./assets/favicon.png"
