@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableOpacity, Button, Modal } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Modal } from 'react-native';
+
 const NUM_CARDS = 12;
 
 export default function MemoryGame() {
   const [key, setKey] = useState(0);
-  const [cards, setCards] = useState<Array<{ id: number; isFlipped: boolean; color: string }>>([]);
+  const [cards, setCards] = useState<
+    Array<{ id: number; isFlipped: boolean; color: string; position: string }>
+  >([]);
   const [flippedCards, setFlippedCards] = useState<Array<{ id: number; color: string }>>([]);
   const [gameOver, setGameOver] = useState(false);
 
@@ -13,32 +16,39 @@ export default function MemoryGame() {
     initializeCards();
   }, [key]);
 
+  const shuffleArray = (array: number[] | string[]) => {
+    const shuffledArray = [...array];
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+    }
+    return shuffledArray;
+  };
+
   const initializeCards = () => {
-    const colors = ['#FF0000', '#000000', '#0000FF', '#00FF00', '#FFFFFF', '#00FFFF'];
+    const newCards = [];
+    const shuffledColors = shuffleArray([
+      '#FF0000',
+      '#000000',
+      '#0000FF',
+      '#00FF00',
+      '#FFFFFF',
+      '#00FFFF',
+    ]);
 
-    const newCards: Array<{ id: number; isFlipped: boolean; color: string }> = [];
+    const stringColors = shuffledColors.map((color) => String(color));
+    const positions = Array.from({ length: NUM_CARDS }, (_, index) => index);
+    const shuffledPositions = shuffleArray(positions);
 
-    for (let i = 1; i <= NUM_CARDS / 2; i++) {
-      const cardId = i;
-      newCards.push({ id: cardId, isFlipped: false, color: colors[i - 1] });
-      newCards.push({ id: cardId + NUM_CARDS / 2, isFlipped: false, color: colors[i - 1] });
+    for (let i = 0; i < NUM_CARDS; i++) {
+      const cardId = i + 1;
+      const color = stringColors[i % (NUM_CARDS / 2)];
+      const position = shuffledPositions[i].toString();
+      newCards.push({ id: cardId, isFlipped: false, color, position });
     }
 
     setCards(newCards);
     setGameOver(false);
-  };
-
-  const renderCards = () => {
-    return cards.map((card) => (
-      <TouchableOpacity
-        key={card.id}
-        style={[styles.card, card.isFlipped && styles.flippedCard]}
-        onPress={() => flipCard(card)}
-        disabled={card.isFlipped || gameOver}
-      >
-        {card.isFlipped && <View style={[styles.cardColor, { backgroundColor: card.color }]} />}
-      </TouchableOpacity>
-    ));
   };
 
   const flipCard = (card: { id: number; isFlipped: boolean; color: string }) => {
@@ -46,7 +56,7 @@ export default function MemoryGame() {
       return;
     }
 
-    const newCards = cards.map((c) => (c.id === card.id ? { ...c, isFlipped: true } : c));
+    const newCards = cards.map((c) => (c.id === card.id ? { ...c, isFlipped: !c.isFlipped } : c));
     setCards(newCards);
 
     const newFlippedCards = [...flippedCards, card];
@@ -89,6 +99,19 @@ export default function MemoryGame() {
       setGameOver(true);
     }
   }, [cards]);
+
+  const renderCards = () => {
+    return cards.map((card) => (
+      <TouchableOpacity
+        key={card.id}
+        style={[styles.card, card.isFlipped && styles.flippedCard]}
+        onPress={() => flipCard(card)}
+        disabled={card.isFlipped}
+      >
+        {card.isFlipped && <View style={[styles.cardColor, { backgroundColor: card.color }]} />}
+      </TouchableOpacity>
+    ));
+  };
 
   return (
     <View style={styles.container}>

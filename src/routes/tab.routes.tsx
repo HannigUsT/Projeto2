@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Feather } from '@expo/vector-icons';
 import Home from '../screens/Home';
+
 const Tab = createBottomTabNavigator();
 
 export default function TabRoutes() {

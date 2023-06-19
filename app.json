@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Projeto2",
-    "slug": "Projeto2",
+    "name": "ProjetoMobileFinal",
+    "slug": "ProjetoMobileFinal",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,10 +21,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.hannigust.ProjetoMobileFinal"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "1cfd69b5-5f50-45bd-82eb-a7bab252e6eb"
+      }
     }
   }
 }

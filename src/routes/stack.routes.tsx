@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import NotePad from '../screens/NotePad';
+
 const Stack = createNativeStackNavigator();
 
 export default function StackRoutes() {
